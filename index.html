@@ -8,8 +8,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <script src="./js/API_planet.js"></script>
-
     <title>Exercise 3</title>
   </head>
   <body>
@@ -37,26 +35,36 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  
 
     <script>
-        planet.results.forEach(function(e) {
-            var data_API = `<tr class="table data">
-                                <td>${e.name}</td>
-                                <td>${e.rotation_period}</td>
-                                <td>${e.orbital_period}</td>
-                                <td>${e.diameter}</td>
-                                <td>${e.climate}</td>
-                                <td>${e.gravity}</td>
-                                <td>${e.terrain}</td>
-                                <td>${e.surface_water}</td>
-                                <td>${e.population}</td>
-                            </tr>`
+        let xml = new XMLHttpRequest;
+        xml.open('GET', 'https://swapi.co/api/planets/', true)
         
-        document.querySelector("#data_target").insertAdjacentHTML('beforeend',data_API)
-        });
-        
+        //call the onload 
+        xml.onload = function() {
+                //return server response as an object with JSON.parse
+                var data_API = JSON.parse(this.responseText);
+                data_API.results.forEach(function(e){
+                var data = `<tr class="table data">
+                        <td>${e.name}</td>
+                        <td>${e.rotation_period}</td>
+                        <td>${e.orbital_period}</td>
+                        <td>${e.diameter}</td>
+                        <td>${e.climate}</td>
+                        <td>${e.gravity}</td>
+                        <td>${e.terrain}</td>
+                        <td>${e.surface_water}</td>
+                        <td>${e.population}</td>
+                    </tr>`
+
+                document.querySelector("#data_target").insertAdjacentHTML('beforeend',data)
+            });
+            
+        }
+        //call send
+        xml.send();
     </script>
-        <!-- Script search-->
+
+    
 </body>
 </html>
